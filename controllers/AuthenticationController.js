@@ -3,11 +3,14 @@ const userService  = require('../services/AuthenticationService')
 class UserAuthenticationController{
     async getUsers(request, response, next){
         try{
-            const result = await userService.getUsers()
+            const result = await userService.getUsers();
+            console.log(result)
             return result.success ? response.status(200).json(result):response.status(203).json(result)
         }catch (e){
             console.log(e);
-            next();
+            return response.status(203).json(e);
+        }finally{
+            next()
         }
     }
 
