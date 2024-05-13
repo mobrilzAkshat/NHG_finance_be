@@ -122,10 +122,10 @@ class userAuthenticationService{
         return new Promise(async(resolve, reject)=>{
             const userList = "select * from users"
             const result = await execute(userList, [])
-            if(result.length > 0){
+            if(result[0]){
                 return resolve({"status":200, "data":result ,"success":true})
             }else{
-                return reject({"status":203, "success":false, "message":"No content"})
+                return reject({"status":204, "success":false})
             }
         })
     }
