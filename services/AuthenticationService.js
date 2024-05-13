@@ -1,4 +1,5 @@
 const crypto = require("../common/crypto"); 
+const { sendMailToUser } = require("../common/sendMail");
 const { execute } = require("../config/queryWrapperMysql");
 const { v4: uuidv4 } = require('uuid');
 
@@ -52,9 +53,9 @@ class userAuthenticationService{
                 if (decryptedPassword === userData.password) {
                     const otp = crypto.generateOtp()
                     const query = `update users set otp = ? where email = ?`
-                    const updateResult = await execute(query, [otp, result[0].email])
+                    const updateResult = await execute(query, [otp, resultUser[0].email])
                     if(updateResult.affectedRows>0){
-                        sendMailToUser(result[0].email, otp)
+                        await sendMailToUser(resultUser[0].email, otp)
                         return { "success": true, message: "OTP sent to registered mail id" };
                     }
                 } else {
