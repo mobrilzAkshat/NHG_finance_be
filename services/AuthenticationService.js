@@ -1,6 +1,7 @@
-const { execute } = require('../config/queryWrapperMysql');
-const crypto = require("../common/crypto");
-const { sendMailToUser } = require('../common/sendMail');
+const crypto = require("../common/crypto"); 
+const { execute } = require("../config/queryWrapperMysql");
+const { v4: uuidv4 } = require('uuid');
+
 
 // Now, you can use the imported modules as needed
 const decryptedData = crypto.decryptedData;
@@ -13,14 +14,13 @@ class userAuthenticationService{
     async register(registerData) {
         return new Promise(async (resolve, reject) => {
             try {
-                const checkUser = 'SELECT email FROM partners WHERE email = ?';
+                const checkUser = 'SELECT email FROM users WHERE email = ?';
                 const isUserExist = await execute(checkUser, [registerData.email]);
                 if (isUserExist.length > 0) {
                     reject({ "success": false, error: 402, "message": "Try with a different email" });
                 } else {
                     const cipherText = await encryptedData(registerData.password)
-                    const id = uuidv4()
-                    const registerquery = `INSERT INTO partners (f_name, l_name, email, 
+                    const registerquery = `INSERT INTO users (f_name, l_name, email, 
                         mobile, building, street, city, state, postal_code, country, 
                         password, user_type, is_admin, is_active)  
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
