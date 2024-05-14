@@ -23,13 +23,13 @@ class userAuthenticationService{
                     const cipherText = await encryptedData(registerData.password)
                     const registerquery = `INSERT INTO users (f_name, l_name, email, 
                         mobile, building, street, city, state, postal_code, country, 
-                        password, user_type, is_admin, is_active)  
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+                        password, user_type, is_active)  
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
                     const insertResult = await execute(registerquery, [
                         registerData.firstName, registerData.lastName, registerData.email, registerData.mobile, registerData.building,
                         registerData.street, registerData.city, registerData.state, registerData.postalCode, registerData.country,
-                        cipherText, registerData.user_type, registerData.is_admin, registerData.is_active, ]);
+                        cipherText, registerData.user_type, registerData.is_active, ]);
 
                     if (insertResult.affectedRows > 0) {
                         resolve({ "success": true, message: "Data inserted successfully"});
@@ -44,14 +44,15 @@ class userAuthenticationService{
         });
     }    
     // login Api for users
-    async login(userData) {
+    async login(userData, type) {
         try {
+            console.log(type)
             const checkUser = 'SELECT id, email, password FROM users WHERE email = ?';
             const resultUser = await execute(checkUser, [userData.email]);
             if (resultUser.length > 0) {
                 const decryptedPassword = await decryptedData(resultUser[0].password);
                 if (decryptedPassword === userData.password) {
-                    if(type === 1){
+                    if(type == 1){
                         const otp = crypto.generateOtp()
                         const query = `update users set otp = ? where email = ?`
                         const updateResult = await execute(query, [otp, resultUser[0].email])
@@ -59,8 +60,8 @@ class userAuthenticationService{
                             await sendMailToUser(resultUser[0].email, otp)
                             return { "success": true, message: "OTP sent to registered mail id" };
                         }
-                    }if(type === 2){
-                        return { "success": true, message: "OTP sent to registered mail id" };
+                    }if(type == 2){
+                        return { "success": true, message: "Login Successfull" };
                     }
                 } else {
                     return { "success": false, message: "Incorrect username/password" };
