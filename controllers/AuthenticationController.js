@@ -29,6 +29,7 @@ class UserAuthenticationController{
         try {
             const loginData = request.body;
             const result = await userService.login(loginData, request.params.type)
+            console.table(result)
             return result.success ? response.status(200).json(result):response.status(203).json(result)
         } catch (error) {
             console.log(error);

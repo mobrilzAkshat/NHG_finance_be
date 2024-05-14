@@ -18,7 +18,7 @@ class userAuthenticationService{
                 const checkUser = 'SELECT email FROM users WHERE email = ?';
                 const isUserExist = await execute(checkUser, [registerData.email]);
                 if (isUserExist.length > 0) {
-                    reject({ "success": false, error: 402, "message": "Try with a different email" });
+                    return resolve({ "success": false, error: 402, "message": "Try with a different email" });
                 } else {
                     const cipherText = await encryptedData(registerData.password)
                     const registerquery = `INSERT INTO users (f_name, l_name, email, 
@@ -32,9 +32,9 @@ class userAuthenticationService{
                         cipherText, registerData.user_type, registerData.is_active, ]);
 
                     if (insertResult.affectedRows > 0) {
-                        resolve({ "success": true, message: "Data inserted successfully"});
+                        return resolve({ "success": true, message: "Data inserted successfully"});
                     } else {
-                        reject({ "success": false, message: "No rows affected" });
+                        return resolve({ "success": false, message: "No rows affected" });
                     }
                 }
             } catch (e) {
