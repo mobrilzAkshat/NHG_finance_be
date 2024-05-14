@@ -51,11 +51,15 @@ class userAuthenticationService{
             if (resultUser.length > 0) {
                 const decryptedPassword = await decryptedData(resultUser[0].password);
                 if (decryptedPassword === userData.password) {
-                    const otp = crypto.generateOtp()
-                    const query = `update users set otp = ? where email = ?`
-                    const updateResult = await execute(query, [otp, resultUser[0].email])
-                    if(updateResult.affectedRows>0){
-                        await sendMailToUser(resultUser[0].email, otp)
+                    if(type === 1){
+                        const otp = crypto.generateOtp()
+                        const query = `update users set otp = ? where email = ?`
+                        const updateResult = await execute(query, [otp, resultUser[0].email])
+                        if(updateResult.affectedRows>0){
+                            await sendMailToUser(resultUser[0].email, otp)
+                            return { "success": true, message: "OTP sent to registered mail id" };
+                        }
+                    }if(type === 2){
                         return { "success": true, message: "OTP sent to registered mail id" };
                     }
                 } else {

@@ -3,7 +3,7 @@ const publicRoute = Express.Router()
 const userController = require("../controllers/AuthenticationController");
 
 publicRoute.get("/api/user", userController.getUsers);
-publicRoute.put("/api/login", userController.loginUser);
+publicRoute.put("/api/login/:type", userController.loginUser);
 publicRoute.put("/api/verify-otp", userController.verifyOtp);
 publicRoute.put('/api/resend-otp', userController.resendOtp);
 publicRoute.post("/api/register", userController.signupNewUser);

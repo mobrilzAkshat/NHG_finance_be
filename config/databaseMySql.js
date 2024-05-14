@@ -1,12 +1,12 @@
 const mysql = require("mysql2")
-// const {DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE} = require("../../env")
+require("dotenv").config()
 const pool = mysql.createPool({
     connectionLimit : 10,
-    host: "localhost",  // ip address of server running mysql
-    port:  "3306",
-    user: "nhg",    // user name to your mysql database
-    password: "yDw57p09!",
-    database: "nhg", // use the specified database
+    host: process.env.DB_HOST,// "185.80.128.192",  // ip address of server running mysql
+    port: process.env.MYSQLPORT ,//"3306",
+    user: process.env.DB_USER,//"nhg",    // user name to your mysql database
+    password: process.env.DB_PASSWORD, //"yDw57p09!",
+    database: process.env.DB_DATABASE,//"nhg", // use the specified database
     multipleStatements: true
 })
 
