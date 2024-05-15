@@ -32,7 +32,7 @@ const decryptedData = async (encryptedPassword) => {
 };
     const generateJwtToken = (payload) => {
         // Set the expiration time for the token
-        const expiresIn = 1; // Example: Token expires in 1 day
+        const expiresIn = "1d"; // Example: Token expires in 1 day
     
         // Sign the JWT token
         const token = jwt.sign(payload, "##$$Nhgfinance$$##", { expiresIn });
@@ -50,27 +50,14 @@ const decryptedData = async (encryptedPassword) => {
 
     return otp.toString(); // Convert the number to a string
   }
-    function decodeToken(token, secretKey) {
+    function decodeToken(token) {
         // Verify the token and extract payload
-        const decoded = jwt.verify(token, secretKey); // Replace 'your-secret-key' with your actual secret key
+        const decoded = jwt.verify(token, "##$$Nhgfinance$$##"); // Replace 'your-secret-key' with your actual secret key
 
         // Extract user ID from payload
-        const userId = decoded.id; // Assuming 'id' is the key containing the user ID in the payload
+        const userId = decoded.userId; // Assuming 'id' is the key containing the user ID in the payload
         return userId;
     }
-
-
-  
-// function generateRandomPassword() {
-// const password = generatePassword.generate({
-// length: 12,
-// numbers: true,
-// symbols: true,
-// lowercase: true,
-// uppercase: true,
-// });
-// return password;
-// }
 
 module.exports = {
     encryptedData,

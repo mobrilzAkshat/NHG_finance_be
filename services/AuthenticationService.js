@@ -184,11 +184,13 @@ class userAuthenticationService{
             if (!token) {
                 return response.status(401).json({ success: false, message: "Token is missing" });
             }else{
-                const userId = decodeToken(token, "##$$ecomm$$##")
-                const deletesQuery = `DELETE FROM account_tokens WHERE user_id = ?;`
-                const result = await execute(deletesQuery, [userId])
+                const id = decodeToken(token)
+                console.log(id)
+                const deletesQuery = `DELETE FROM users_authtoken WHERE user_id = ?;`
+                const result = await execute(deletesQuery, [id])
+                console.log(result)
                 if(result.affectedRows == 1){
-                    return resolve({"success":true, "message":"user deleted successfully"})
+                    return resolve({"success":true, "message":"Logout Successfull"})
                 }else{
                     return reject({"success":false, "message":"No such user found"})
                 }
