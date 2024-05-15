@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
     port: process.env.MAILPORT,
     secure: false, // Use `true` for port 465, `false` for all other ports
     auth: {
-      user: process.env.USER,
+      user: process.env.MAILUSER,
       pass: process.env.MAILAPPPASSWORD,
     },
   });
@@ -18,7 +18,7 @@ const sendMailToUser =  async (userId, OTP)=>{
     const mailOptions = {
         from: process.env.MAILUSER,
         to: userId,
-        subject: 'Welcome to Greeznet as a partner',
+        subject: 'Welcome to NHG Finance',
         html: `Your One time Password(OTP) is ${OTP}`
     };
     transporter.sendMail(mailOptions, function(error, info) {
