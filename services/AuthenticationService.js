@@ -103,7 +103,7 @@ class userAuthenticationService{
         if(result.length > 0){
             const otp = crypto.generateOtp()
             query = `update users set otp = ? where id = ?`
-            updateResult = await execute(query, [otp, id])
+            const updateResult = await execute(query, [otp, id])
             if(updateResult.affectedRows>0){
                 sendMailToUser(result[0].email, otp)
                 return {"success": true, message: "OTP sent to registered mail id" };

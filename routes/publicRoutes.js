@@ -4,8 +4,8 @@ const userController = require("../controllers/AuthenticationController");
 
 publicRoute.get("/api/user", userController.getUsers);
 publicRoute.put("/api/login/:type", userController.loginUser);
-publicRoute.put("/api/verify-otp", userController.verifyOtp);
-publicRoute.put('/api/resend-otp', userController.resendOtp);
+publicRoute.post("/api/verify-otp", userController.verifyOtp);
+publicRoute.get('/api/resend-otp/:id', userController.resendOtp);
 publicRoute.post("/api/register", userController.signupNewUser);
 publicRoute.patch("/api/updateuser/:id", userController.updateExistingUser);
 publicRoute.put("/api/forgot/:id", userController.forgotPassword);
