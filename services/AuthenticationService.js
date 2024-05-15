@@ -58,7 +58,7 @@ class userAuthenticationService{
                         const updateResult = await execute(query, [otp, resultUser[0].email])
                         if(updateResult.affectedRows>0){
                             await sendMailToUser(resultUser[0].email, otp)
-                            return { "success": true, message: "OTP sent to registered mail id" };
+                            return { "success": true, message: "OTP sent to registered mail id", id:resultUser[0].id };
                         }
                     }if(type == 2){
                         return { "success": true, message: "Login Successfull" };
@@ -75,15 +75,21 @@ class userAuthenticationService{
         }
     }
 // Verify OTP of users
-    async verifyOtp(id, otp){
+    async verifyOtp(verificationData){
         let query = 'select id, email, otp from users where id = ?'
-        let result = await  execute(query, [id])
+        let result = await  execute(query, [verificationData.id])
         if(result.length > 0){
-            const jwttoken = generateJwtToken(result[0].email, "##$$Nhgfinance$$##", '12hr');
-            if(result[0].otp === otp){
+            const payload = {
+                userId: result[0].id,
+                email: result[0].email,
+                // Add any other data you want to include in the token payload
+              };
+              console.log(payload)
+            const jwttoken = generateJwtToken(payload);
+            if(result[0].otp === verificationData.otp){
                 query = `INSERT INTO users_authtoken (user_id, auth_token)VALUES (?, ?);
                         UPDATE users SET is_active = ? where id = ?;`
-                result = await execute(query, [id, jwttoken, 1, id])
+                result = await execute(query, [result[0].id, jwttoken, 1, result[0].id])
                 return {"status":true, "data":{"token":jwttoken, "message":"Login Successfull"}}
             }else{
                 return {"success": false, message: "OTP verification failed" };

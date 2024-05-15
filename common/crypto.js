@@ -30,12 +30,16 @@ const decryptedData = async (encryptedPassword) => {
         throw e; // Rethrow the error to be handled by the caller
     }
 };
+    const generateJwtToken = (payload) => {
+        // Set the expiration time for the token
+        const expiresIn = 1; // Example: Token expires in 1 day
+    
+        // Sign the JWT token
+        const token = jwt.sign(payload, "##$$Nhgfinance$$##", { expiresIn });
+    
+        return token;
+    };
 
-
-    function generateJwtToken(payload, secretKey, expiresIn) {
-        // Create the JWT token with the provided payload and secret key
-        return jwt.sign(payload, secretKey, { expiresIn });
-    }
 
   function generateOtp(){
     const min = 1000; // Minimum 4-digit number

@@ -41,7 +41,8 @@ class UserAuthenticationController{
 
     async verifyOtp(request, response, next){
         try{
-            const result = await userService.verifyOtp(request.body)
+            const {id, otp} = request.body
+            const result = await userService.verifyOtp({id, otp})
             return result.success ? response.status(200).json(result):response.status(400).json(result)
         }catch (error){
             console.log(error)
